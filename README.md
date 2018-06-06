@@ -10,14 +10,14 @@ Este projeto consiste da implementação inicial de um leitor de livros, utiliza
 Todos os periféricos utilizados foram internos à placa Discovery STM32F429.
 
 ### Fluxograma do Firmware
-![Fluxograma do Firmaware] (Fluxograma.jpg)
+![Fluxograma do Firmaware](Fluxograma.jpg)
 
 ### Diagrama de Blocos
 
-![Diagrama de Blocos] (DiagramaDeBlocos.JPG)
+![Diagrama de Blocos](DiagramaDeBlocos.JPG)
 ### Referências
 
-[datasheet-STM32F429.pdf] [DataSheet-stm32f429]
+[datasheet-STM32F429.pdf][DataSheet-stm32f429]
 
-[ManualUser-STM32F429.pdf] [Manual do usuário - stm32f429]
+[ManualUser-STM32F429.pdf][Manual do usuário - stm32f429]
 
