@@ -14,10 +14,10 @@ Todos os periféricos utilizados foram internos à placa Discovery STM32F429.
 
 ### Diagrama de Blocos
 
-![Diagrama de Blocos](DiagramaDeBlocos.JPG)
+![Diagrama de Blocos] (DiagramaDeBlocos.JPG)
 ### Referências
 
-[datasheet-STM32F429][DataSheet-stm32f429]
+[datasheet-STM32F429] [DataSheet-stm32f429]
 
-[ManualUser-STM32F429][Manual do usuário - stm32f429]
+[ManualUser-STM32F429] [Manual do usuário - stm32f429]
 
