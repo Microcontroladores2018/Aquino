@@ -1,2 +1,4 @@
-main.cpp:46:5:int main()	16	static
-main.cpp:82:21:uint32_t sEE_TIMEOUT_UserCallback()	4	static
+main.cpp:50:5:int main()	8	static
+main.cpp:101:13:void LCD_Config()	144	static
+main.cpp:261:13:void LCD_AF_GPIOConfig()	16	static
+main.cpp:382:21:uint32_t sEE_TIMEOUT_UserCallback()	4	static

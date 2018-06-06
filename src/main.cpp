@@ -28,15 +28,13 @@ SOFTWARE.
 */
 
 /* Includes */
-#include "stm32f4xx.h"
-#include "stm32f429i_discovery.h"
 #include "main.h"
+
 
 /* Private macro */
 /* Private variables */
 int pag=0;
-uint32_t *livro;
-uint8_t ubPressedButton;
+uint32_t add;
 /* Private function prototypes */
 static void LCD_Config(void);  //Declara a funçao que configura a tela LCD
 static void LCD_AF_GPIOConfig(void);  //Declara a funcao que configura as portas GPIO utilizadas pela tela LCD
@@ -58,7 +56,10 @@ int main(void)
 	  LCD_Config();
 
 	  /* Enable Layer1 */
-	  LTDC_LayerCmd(LTDC_Layer1, ENABLE);
+	 // LTDC_LayerCmd(LTDC_Layer1, ENABLE);
+
+	  /*Enable Layer2*/
+	  LTDC_LayerCmd(LTDC_Layer2, ENABLE);
 
 	  /* Reload configuration of Layer1 */
 	  LTDC_ReloadConfig(LTDC_IMReload);
@@ -68,18 +69,31 @@ int main(void)
 
 	  while (1)
 	  {
+		  	  pag++; //passa de página
+		      if (pag == 2) pag=0;
+
 		  /* Espera o Botão ser pressionado */
 		     while (STM_EVAL_PBGetState(BUTTON_USER) != Bit_RESET)
 		     {
 		     }
-		     pag++;
-		     if (pag == Npaginas) pag=0;
+
+
 		     /*Espera o Botão ser solto */
 		     while (STM_EVAL_PBGetState(BUTTON_USER) != Bit_SET)
 		     {
 		     }
 
-		     LTDC_ReloadConfig(LTDC_IMReload);
+		    if(pag==0){
+		     LTDC_LayerAddress(LTDC_Layer1, (uint32_t)&livro1	);				// muda o buffer address
+		     LTDC_ReloadConfig(LTDC_IMReload);					// Reload LCD
+		    }
+		    if(pag==1){
+		    LTDC_LayerCmd(LTDC_Layer1, DISABLE);
+		    LTDC_Layer2->CFBAR &= ~(LTDC_LxCFBAR_CFBADD);
+		    LTDC_Layer2->CFBAR = ((uint32_t)&livro1 +76800);	// muda o buffer address
+		    LTDC_LayerCmd(LTDC_Layer1, ENABLE);
+		     LTDC_ReloadConfig(LTDC_IMReload);					// Reload LCD
+		    }
 
 	  }
 }
@@ -188,10 +202,10 @@ static void LCD_Config(void)
      Horizontal stop = Horizontal start + window width -1 = 30 + 240 -1
      Vertical start   = vertical synchronization + vertical back porch     = 4
      Vertical stop   = Vertical start + window height -1  = 4 + 320 -1      */
-  LTDC_Layer_InitStruct.LTDC_HorizontalStart = 30 + 5;// 5 para comecar a fig
-  LTDC_Layer_InitStruct.LTDC_HorizontalStop = (229 + 35 - 1);
-  LTDC_Layer_InitStruct.LTDC_VerticalStart = 4 + 80;
-  LTDC_Layer_InitStruct.LTDC_VerticalStop = (161 + 4 + 80 - 1);
+  LTDC_Layer_InitStruct.LTDC_HorizontalStart = 30 ;//
+  LTDC_Layer_InitStruct.LTDC_HorizontalStop = (240 + 30 - 1);
+  LTDC_Layer_InitStruct.LTDC_VerticalStart = 80+4  ;
+  LTDC_Layer_InitStruct.LTDC_VerticalStop = (240 + 4  - 1);
 
   /* Pixel Format configuration*/
   LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_RGB565;
@@ -212,25 +226,27 @@ static void LCD_Config(void)
 
 
   /* Input Address configuration */
-  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = (uint32_t)&logo_imbel;
+  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = (uint32_t)&livro1+76800;
 
   /* the length of one line of pixels in bytes + 3 then :
      Line Lenth = Active high width x number of bytes per pixel + 3
      Active high width         = 240
      number of bytes per pixel = 2    (pixel_format : RGB565)
   */
-  LTDC_Layer_InitStruct.LTDC_CFBLineLength = ((229 * 2) + 3);
+  LTDC_Layer_InitStruct.LTDC_CFBLineLength = ((240 * 2) + 3);
 
   /*  the pitch is the increment from the start of one line of pixels to the
       start of the next line in bytes, then :
       Pitch = Active high width x number of bytes per pixel
   */
-  LTDC_Layer_InitStruct.LTDC_CFBPitch = (229 * 2);
+  LTDC_Layer_InitStruct.LTDC_CFBPitch = (240 * 2);
 
   /* configure the number of lines */
-  LTDC_Layer_InitStruct.LTDC_CFBLineNumber = 161;
+  LTDC_Layer_InitStruct.LTDC_CFBLineNumber = 160;
 
   LTDC_LayerInit(LTDC_Layer1, &LTDC_Layer_InitStruct);
+
+  LTDC_LayerInit(LTDC_Layer2, &LTDC_Layer_InitStruct);
 
 
 

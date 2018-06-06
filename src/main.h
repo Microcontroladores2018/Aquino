@@ -7,7 +7,11 @@
 
 #ifndef MAIN_H_
 #define MAIN_H_
-
+#include "stm32f4xx.h"
+#include <stdio.h>
+#include "stm32f429i_discovery.h"
+#include "stm32f429i_discovery_lcd.h"
+#include "livro2.h"
 
 
 
